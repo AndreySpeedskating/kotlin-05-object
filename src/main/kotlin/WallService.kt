@@ -1,30 +1,29 @@
-object WallService {
-    private var posts = emptyArray<Post>()
+class WallService {
+    private val posts = mutableListOf<Post>()
     private var nextId = 1
 
     fun add(post: Post): Post {
         val newPost = post.copy(id = nextId++)
-        posts += newPost
+        posts.add(newPost)
         return newPost
     }
 
     fun update(post: Post): Boolean {
-        for ((index, existingPost) in posts.withIndex()) {
-            if (existingPost.id == post.id) {
-                posts[index] = post
-                return true
-            }
+        val index = posts.indexOfFirst { it.id == post.id }
+        return if (index != -1) {
+            posts[index] = post
+            true
+        } else {
+            false
         }
-        return false
     }
 
     fun clear() {
-        posts = emptyArray()
+        posts.clear()
         nextId = 1
     }
 
-    // Вспомогательный метод для тестов
-    fun getPosts(): Array<Post> {
-        return posts.copyOf()
-    }
+    fun findById(id: Int): Post? = posts.find { it.id == id }
+
+    fun getPosts(): List<Post> = posts.toList()
 }
