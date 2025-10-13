@@ -58,3 +58,45 @@ data class Reposts(
 data class Views(
     val count: Int = 0
 )
+
+data class Comment(
+    val id: Int = 0,
+    val postId: Int,
+    val fromId: Int,
+    val date: Long = System.currentTimeMillis() / 1000,
+    val text: String,
+    val replyToUser: Int? = null,
+    val replyToComment: Int? = null,
+    val attachments: List<Attachment> = emptyList(),
+    val parentsStack: List<Int> = emptyList(),
+    val thread: CommentThread? = null
+)
+
+data class CommentThread(
+    val count: Int,
+    val items: List<Comment> = emptyList(),
+    val canPost: Boolean = true,
+    val showReplyButton: Boolean = true,
+    val groupsCanPost: Boolean = true
+)
+
+data class Report(
+    val id: Int = 0,
+    val commentId: Int,
+    val reason: Reason,
+    val date: Long = System.currentTimeMillis() / 1000
+)
+
+/**
+ * Причины жалобы
+ */
+enum class Reason {
+    SPAM,
+    CHILD_PORNOGRAPHY,
+    EXTREMISM,
+    VIOLENCE,
+    DRUG_PROPAGANDA,
+    ADULT_MATERIAL,
+    INSULT,
+    ABUSE
+}
